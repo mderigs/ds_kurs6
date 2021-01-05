@@ -50,9 +50,9 @@ filename <- "murders.csv"
 murders=read.csv(file.path(path, filename), stringsAsFactors = TRUE)
 class(murders)
 class(murders$abb)
-class(murders$region)
+class(murders$total)
 
-#Download form Internet
+  #Download form Internet
 url <- "https://raw.githubusercontent.com/rafalab/dslabs/master/inst/extdata/murders.csv"
 dat <- read_csv(url)
 download.file(url, "murders.csv")
@@ -61,3 +61,10 @@ tmp_filename <- tempfile()
 download.file(url, tmp_filename)
 dat <- read_csv(tmp_filename)
 file.remove(tmp_filename)
+
+#Question 10
+race_times <- read.csv("times.txt", stringsAsFactors = TRUE)
+#Question 12
+race_times <- read.csv("times.txt", stringsAsFactors = F)
+class(race_times)                        
+                        
