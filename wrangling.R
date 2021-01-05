@@ -66,5 +66,38 @@ file.remove(tmp_filename)
 race_times <- read.csv("times.txt", stringsAsFactors = TRUE)
 #Question 12
 race_times <- read.csv("times.txt", stringsAsFactors = F)
-class(race_times)                        
-                        
+class(race_times)        
+#Question 14
+library(tidyverse)
+read_lines("wdbc.data", n_max = 3)
+#wdbc <- read_csv("wdbc.data")                        
+#Question 15
+url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/wdbc.data"
+wdbc <- read_csv("wdbc.data", col_names = FALSE)       
+#Question16
+head(wdbc)
+str(wdbc)
+summary(wdbc)
+dim(wdbc)
+
+
+library(tidyverse)
+library(dslabs)
+data(gapminder)
+
+# create and inspect a tidy data frame
+tidy_data <- gapminder %>% 
+  filter(country %in% c("South Korea", "Germany")) %>%
+  select(country, year, fertility)
+head(tidy_data)
+  
+# plotting tidy data is simple
+tidy_data %>% 
+  ggplot(aes(year, fertility, color = country)) +
+  geom_point()
+
+# import and inspect example of original Gapminder data in wide format
+path <- system.file("extdata", package="dslabs")
+filename <- file.path(path,  "fertility-two-countries-example.csv")
+wide_data <- read_csv(filename)
+select(wide_data, country, `1960`:`1967`)   
