@@ -161,7 +161,7 @@ dat %>% separate(key, c("year", "variable_name"), "_")
 dat %>% separate(key, c("year", "variable_name"))
 
 # split on all underscores, pad empty cells with NA
-dat %>% separate(key, c("year", "first_variable_name", "second_variable_name"), 
+dat %>% separate(key, c("year", "first_variable_name", "second_variable_name"),
                  fill = "right")
 
 # split on first underscore but keep life_expectancy merged
@@ -182,3 +182,17 @@ dat %>%
   unite(variable_name, first_variable_name, second_variable_name, sep="_") %>%
   spread(variable_name, value) %>%
   rename(fertility = fertility_NA)
+
+#Questions on tidying
+#Question 3
+library(tidyverse)
+d<- read_csv("avg_times.csv")
+tidy_data <- d %>%
+  gather(year, time, `2015`:`2017`)
+#Question 4
+dat_wide <- read_fwf("diseases.txt", skip = 1, fwf_widths(c(8,5,11,11,6,6,8),
+                                                c("state","year","population","HepatitisA","Mumps","Polio","Rubella")))
+#dat_tidy <- dat_wide %>%
+#  gather(key = count, value = disease, -state, -year, -population)
+dat_tidy <- dat_wide %>%
+  gather(key = disease, value = count, HepatitisA:Rubella)
