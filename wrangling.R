@@ -47,7 +47,7 @@ dat2=read.csv(file.path(path, filename2))
 
 #Standardeinlesefunktionen
 filename <- "murders.csv"
-murders=read.csv(file.path(path, filename), stringsAsFactors = TRUE)
+murders <- read.csv(file.path(path, filename), stringsAsFactors = TRUE)
 class(murders)
 class(murders$abb)
 class(murders$total)
@@ -196,3 +196,21 @@ dat_wide <- read_fwf("diseases.txt", skip = 1, fwf_widths(c(8,5,11,11,6,6,8),
 #  gather(key = count, value = disease, -state, -year, -population)
 dat_tidy <- dat_wide %>%
   gather(key = disease, value = count, HepatitisA:Rubella)
+
+#Question 8
+stats <- read_fwf("basketball_players.txt", skip = 1, fwf_widths(c(17,6), c("key", "value")))
+tidy_data <- stats %>%
+  separate(col = key, into = c("player", "variable_name"), sep = "_") %>% 
+  spread(key = variable_name, value = value)
+
+library(tidyverse)
+library(dslabs)
+#Question 9
+class(co2)
+head(co2)
+co2
+
+#Question 10
+co2_wide <- data.frame(matrix(co2, ncol = 12, byrow = TRUE)) %>% 
+  setNames(1:12) %>%
+  mutate(year = as.character(1959:1997))
