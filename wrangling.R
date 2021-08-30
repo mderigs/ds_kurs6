@@ -286,7 +286,7 @@ tab2 <- tab[3:4,]
 bind_rows(tab1, tab2)
 
 
-#set operators
+  #set operators
 # intersect vectors or data frames
 intersect(1:10, 6:15)
 intersect(c("a","b","c"), c("b","c","d"))
@@ -312,3 +312,37 @@ setdiff(tab1, tab2)
 setequal(1:5, 1:6)
 setequal(1:5, 5:1)
 setequal(tab1, tab2)
+
+
+#Question 2
+tab1 <- slice(tab, c(1:3, 8, 9)) %>% select(state, population)
+tab2 <- slice(tab, c(1:3, 5:7)) %>% select(state, electoral_votes)
+semi_join(tab1, tab2, by = "state")
+dim(semi_join(tab1, tab2, by = "state"))
+
+#Question 5
+library(Lahman)
+top <- Batting %>% 
+  filter(yearID == 2016) %>%
+  arrange(desc(HR)) %>%    # arrange by descending HR count
+  slice(1:10)    # take entries 1-10
+top %>% as_tibble()
+tmp <- Master
+Master %>% as_tibble()
+
+top_names <- top %>% left_join(Master)%>%
+  select(playerID, nameFirst, nameLast, HR)
+  
+#Question 6
+tmp <- Salaries
+top_salary <- Salaries %>% filter(yearID == 2016) %>%
+  right_join(top_names) %>%
+  select(nameFirst, nameLast, teamID, HR, salary)
+
+#Question 7
+tmp <- AwardsPlayers
+top_names %>% left_join(AwardsPlayers) %>% filter(yearID == 2016) %>% select(playerID) %>% distinct()
+top_names %>% semi_join(AwardsPlayers %>% filter(yearID == 2016))
+intersect(top_names %>% select(playerID), AwardsPlayers %>% filter(yearID == 2016) %>% select(playerID))
+setdiff(AwardsPlayers %>% filter(yearID == 2016) %>% select(playerID),
+        top_names %>% select(playerID))
