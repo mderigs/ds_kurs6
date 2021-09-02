@@ -365,4 +365,58 @@ class(tab)
 tab <- tab %>% setNames(c("state", "population", "total", "murders", "gun_murders", "gun_ownership", "total_rate", "murder_rate", "gun_murder_rate"))
 head(tab)
 
+#Assessment Web Scraping
+library(rvest)
+library(tidyverse)
+url <- "https://web.archive.org/web/20181024132313/http://www.stevetheump.com/Payrolls.htm"
+h <- read_html(url)
+nodes <- html_nodes(h, "table")
+html_text(nodes[[4]]) #erste richtige Tabelle mit Inhalten
+html_table(nodes[[8]])
 
+#Question 1
+tab1 <- html_table(nodes[[1]])
+tab2 <- html_table(nodes[[2]])
+tab3 <- html_table(nodes[[3]])
+tab4 <- html_table(nodes[[4]])
+
+sapply(nodes[1:4], html_table)    # 2, 3, 4 give tables with payroll info
+
+#Question 2
+tab1 <- html_table(nodes[[23]])
+tab2 <- html_table(nodes[[22]])
+tab3 <- html_table(nodes[[21]])
+
+html_table(nodes[[length(nodes)-2]])
+html_table(nodes[[length(nodes)-1]])
+html_table(nodes[[length(nodes)]])
+
+#Question 3
+tab1 <- html_table(nodes[[9]]) # statt 10 und 19 scheinen 9und 18 zu passen
+tab2 <- html_table(nodes[[18]])
+tab1 <- tab1 %>% slice(-1) %>% select(-X1) %>%
+  setNames(c("Team", "Payroll", "Average"))
+tab2 <- tab2 %>% slice(-1) %>%
+  setNames(c("Team", "Payroll", "Average"))
+tab3 <- full_join(tab1, tab2, by = "Team")
+#Alternativlösung:
+tab_1 <- html_table(nodes[[10]])
+tab_2 <- html_table(nodes[[19]])
+col_names <- c("Team", "Payroll", "Average")
+tab_1 <- tab_1[-1, -1]
+tab_2 <- tab_2[-1,]
+names(tab_2) <- col_names
+names(tab_1) <- col_names
+full_join(tab_1,tab_2, by = "Team")
+
+#Question 4
+library(rvest)
+library(tidyverse)
+url <- "https://en.wikipedia.org/w/index.php?title=Opinion_polling_for_the_United_Kingdom_European_Union_membership_referendum&oldid=896735054"
+h <- read_html(url)
+nodes <- html_nodes(h, "table")
+length(nodes)
+tab <-   html_table(nodes[6], fill=TRUE)
+class(tab)
+
+tab[[6]] %>% html_table(fill = TRUE) %>% names()    # inspect column names
